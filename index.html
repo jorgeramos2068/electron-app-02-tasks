@@ -13,5 +13,15 @@
       Save
     </button>
   </form>
+  <div id="items-list"></div>
+  <script>
+    let list = ['Apples'];
+    for (i = 0; i < list.length; i++) {
+      let item = document.createElement("div");
+      item.textContent = list[i];
+      item.className = "item";
+      document.querySelector('#items-list').appendChild(item);
+    }
+  </script>
 </body>
 </html>
