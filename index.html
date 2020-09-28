@@ -16,18 +16,23 @@
   <div id="items-list"></div>
   <script>
     let list = ['Apples'];
-    list.map((item) => {
-      let htmlItem = document.createElement('div');
-      htmlItem.textContent = item;
-      htmlItem.className = 'item';
-      document.querySelector('#items-list').appendChild(htmlItem);
-    });
 
     document.querySelector('#items-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const newItem = document.querySelector('#item').value;
       list.push(newItem);
+      printItems();
     });
+
+    const printItems = () => {
+      document.querySelector('#items-list').innerHTML = '';
+      list.map((item) => {
+        let htmlItem = document.createElement('div');
+        htmlItem.textContent = item;
+        htmlItem.className = 'item';
+        document.querySelector('#items-list').appendChild(htmlItem);
+      });
+    };
   </script>
 </body>
 </html>
