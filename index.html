@@ -4,35 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tasks App</title>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <form id="items-form" action="">
-    <label for="item">Item</label>
-    <input type="text" name="item" id="item" />
-    <button type="submit">
-      Save
-    </button>
-  </form>
-  <div id="items-list"></div>
+  <div class="container">
+    <form id="items-form" action="">
+      <div class="form-group">
+        <label for="item">Item</label>
+        <input type="text" name="item" id="item" class="form-control" />
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Save
+      </button>
+    </form>
+    <ul id="items-list" class="list-group mt-3"></ul>
+  </div>
+  <!-- JavaScript fucntionality -->
   <script>
     let list = ['Apples'];
 
     document.querySelector('#items-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      const newItem = document.querySelector('#item').value;
-      list.push(newItem);
-      printItems();
+      const newItem = document.querySelector('#item').value.trim();
+      if ('' !== newItem) {
+        list.push(newItem);
+        printItems();
+        document.querySelector('#item').value = '';
+      }
     });
 
     const printItems = () => {
       document.querySelector('#items-list').innerHTML = '';
       list.map((item) => {
-        let htmlItem = document.createElement('div');
+        let htmlItem = document.createElement('li');
         htmlItem.textContent = item;
-        htmlItem.className = 'item';
+        htmlItem.className = 'list-group-item';
         document.querySelector('#items-list').appendChild(htmlItem);
       });
     };
+
+    printItems();
   </script>
-</body>
+  <!-- Bootstrap -->
+  <script>
+    window.jQuery = window.$ = require('jquery');
+  </script>
+  <script src="./node_modules/popper.js/dist/umd/popper.min.js"></script>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </html>
