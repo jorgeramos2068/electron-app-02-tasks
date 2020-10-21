@@ -1,4 +1,5 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
+const itemsDB = require('./database');
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -12,3 +13,10 @@ const createWindow = () => {
 }
 
 app.whenReady().then(createWindow);
+itemsDB.createDB();
+
+app.on('ready', () => {
+  ipcMain.on('send-items', (event, data) => {
+    itemsDB.getAllItems();
+  });
+});
