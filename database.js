@@ -60,6 +60,12 @@ ipcMain.on('save-item', (event, arg) => {
   }
 })
 
+ipcMain.on('delete-item', (event, arg) => {
+  if (arg) {
+    deleteItem(parseInt(arg));
+  }
+});
+
 module.exports = {
   createDB,
   saveItem,
