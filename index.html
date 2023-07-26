@@ -19,30 +19,40 @@
       <button type="submit" class="btn btn-primary">
         Save
       </button>
+      <button type="button" id="notification-btn" class="btn btn-warning">
+        Notification
+      </button>
     </form>
     <ul id="items-list" class="list-group mt-3"></ul>
   </div>
   <!-- JavaScript fucntionality -->
   <script>
+    const { ipcRenderer } = require('electron');
     let list = [];
     const itemInput = document.querySelector('#item');
 
+    ipcRenderer.send('send-items');
+    ipcRenderer.on('all-items', (event, data) => {
+      list = data;
+      printItems();
+    });
+
     const printItems = () => {
       document.querySelector('#items-list').innerHTML = '';
-      list.map((item, index) => {
+      list.map((item) => {
         let icon = document.createElement('span');
         icon.className = 'fa fa-trash';
         let button = document.createElement('button');
         button.className = 'btn btn-danger btn-delete';
-        button.setAttribute('data-index', index);
+        button.setAttribute('data-index', item.id);
         button.appendChild(icon);
         button.addEventListener('click', (e) => {
           deleteItem(e.target.getAttribute('data-index'));
         });
         let htmlItem = document.createElement('li');
-        htmlItem.textContent = item;
+        htmlItem.textContent = item.name;
         htmlItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-        htmlItem.setAttribute('data-index', index);
+        htmlItem.setAttribute('data-index', item.id);
         htmlItem.appendChild(button);
         document.querySelector('#items-list').appendChild(htmlItem);
       });
@@ -51,9 +61,9 @@
     const addItem = () => {
       const newItem = itemInput.value.trim();
       if ('' !== newItem) {
-        list.push(newItem);
-        printItems();
+        ipcRenderer.send('save-item', newItem);
         itemInput.value = '';
+        ipcRenderer.send('send-items');
       }
     };
 
@@ -75,6 +85,16 @@
     });
 
     printItems();
+
+    // Code for notifications
+    document.querySelector('#notification-btn').addEventListener('click', (e) => {
+      const notification = new Notification('Notification title', {
+        body: 'Notification body'
+      });
+      notification.onclick = () => {
+        console.log('Notification clicked');
+      };
+    });
   </script>
   <!-- JavaScript fucntionality -->
 
