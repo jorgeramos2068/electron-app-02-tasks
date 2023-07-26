@@ -68,8 +68,9 @@
     };
 
     const deleteItem = (index) => {
-      list.splice(index, 1);
-      document.querySelector(`.list-group-item[data-index="${index}"]`).remove();
+      list = list.filter(item => item.id !== parseInt(index));
+      ipcRenderer.send('delete-item', index);
+      printItems();
     };
 
     document.querySelector('#items-form').addEventListener('submit', (e) => {
