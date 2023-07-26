@@ -6,12 +6,14 @@
   <title>Tasks App</title>
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
   <div class="container">
+    <h1>Items list</h1>
     <form id="items-form" action="">
       <div class="form-group">
-        <label for="item">Item</label>
+        <label for="item">Write an item</label>
         <input type="text" name="item" id="item" class="form-control" />
       </div>
       <button type="submit" class="btn btn-primary">
@@ -22,17 +24,25 @@
   </div>
   <!-- JavaScript fucntionality -->
   <script>
+    let list = [];
+    const itemInput = document.querySelector('#item');
+
     const printItems = () => {
       document.querySelector('#items-list').innerHTML = '';
-      list.map((item) => {
-        let icon = document.createElement('i');
+      list.map((item, index) => {
+        let icon = document.createElement('span');
         icon.className = 'fa fa-trash';
         let button = document.createElement('button');
-        button.className = 'btn btn-danger';
+        button.className = 'btn btn-danger btn-delete';
+        button.setAttribute('data-index', index);
         button.appendChild(icon);
+        button.addEventListener('click', (e) => {
+          deleteItem(e.target.getAttribute('data-index'));
+        });
         let htmlItem = document.createElement('li');
         htmlItem.textContent = item;
         htmlItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        htmlItem.setAttribute('data-index', index);
         htmlItem.appendChild(button);
         document.querySelector('#items-list').appendChild(htmlItem);
       });
@@ -47,8 +57,10 @@
       }
     };
 
-    let list = [];
-    const itemInput = document.querySelector('#item');
+    const deleteItem = (index) => {
+      list.splice(index, 1);
+      document.querySelector(`.list-group-item[data-index="${index}"]`).remove();
+    };
 
     document.querySelector('#items-form').addEventListener('submit', (e) => {
       e.preventDefault();
