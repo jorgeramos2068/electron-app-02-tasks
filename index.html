@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Tasks App</title>
 </head>
 <body>
-  <form action="">
+  <form id="items-form" action="">
     <label for="item">Item</label>
     <input type="text" name="item" id="item" />
     <button type="submit">
@@ -16,12 +16,18 @@
   <div id="items-list"></div>
   <script>
     let list = ['Apples'];
-    for (i = 0; i < list.length; i++) {
-      let item = document.createElement("div");
-      item.textContent = list[i];
-      item.className = "item";
-      document.querySelector('#items-list').appendChild(item);
-    }
+    list.map((item) => {
+      let htmlItem = document.createElement('div');
+      htmlItem.textContent = item;
+      htmlItem.className = 'item';
+      document.querySelector('#items-list').appendChild(htmlItem);
+    });
+
+    document.querySelector('#items-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newItem = document.querySelector('#item').value;
+      list.push(newItem);
+    });
   </script>
 </body>
 </html>
