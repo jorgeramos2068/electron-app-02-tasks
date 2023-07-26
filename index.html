@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tasks App</title>
   <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 </head>
 <body>
   <div class="container">
@@ -21,34 +22,55 @@
   </div>
   <!-- JavaScript fucntionality -->
   <script>
-    let list = ['Apples'];
-
-    document.querySelector('#items-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const newItem = document.querySelector('#item').value.trim();
-      if ('' !== newItem) {
-        list.push(newItem);
-        printItems();
-        document.querySelector('#item').value = '';
-      }
-    });
-
     const printItems = () => {
       document.querySelector('#items-list').innerHTML = '';
       list.map((item) => {
+        let icon = document.createElement('i');
+        icon.className = 'fa fa-trash';
+        let button = document.createElement('button');
+        button.className = 'btn btn-danger';
+        button.appendChild(icon);
         let htmlItem = document.createElement('li');
         htmlItem.textContent = item;
-        htmlItem.className = 'list-group-item';
+        htmlItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+        htmlItem.appendChild(button);
         document.querySelector('#items-list').appendChild(htmlItem);
       });
     };
 
+    const addItem = () => {
+      const newItem = itemInput.value.trim();
+      if ('' !== newItem) {
+        list.push(newItem);
+        printItems();
+        itemInput.value = '';
+      }
+    };
+
+    let list = [];
+    const itemInput = document.querySelector('#item');
+
+    document.querySelector('#items-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      addItem();
+    });
+
+    itemInput.addEventListener('keyup', (e) => {
+      if (13 === e.keyCode) {
+        e.preventDefault();
+        addItem();
+      }
+    });
+
     printItems();
   </script>
+  <!-- JavaScript fucntionality -->
+
   <!-- Bootstrap -->
   <script>
     window.jQuery = window.$ = require('jquery');
   </script>
   <script src="./node_modules/popper.js/dist/umd/popper.min.js"></script>
   <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- Bootstrap -->
 </html>
